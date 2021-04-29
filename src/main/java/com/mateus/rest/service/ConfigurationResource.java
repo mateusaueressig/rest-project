@@ -23,7 +23,7 @@ import com.mateus.rest.domain.common.Message;
 import com.mateus.rest.domain.common.Status;
 
 @Path("/configurations")
-@Produces("application/xml")
+@Produces("application/json")
 public class ConfigurationResource {
 
 	@Context
@@ -55,7 +55,7 @@ public class ConfigurationResource {
 		Configuration config = ConfigurationDB.getConfiguration(id);
      
         if(config == null) {
-            return Response.status(javax.ws.rs.core.Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
           
         if(config != null){
@@ -65,40 +65,40 @@ public class ConfigurationResource {
             config.setLink(link);
         }
           
-        return Response.status(javax.ws.rs.core.Response.Status.OK).entity(config).build();
+        return Response.status(Response.Status.OK).entity(config).build();
     }
 
 	@POST
-	@Consumes("application/xml")
+	@Consumes("application/json")
 	public Response createConfiguration(Configuration config){
         if(config.getContent() == null)  {
-            return Response.status(javax.ws.rs.core.Response.Status.BAD_REQUEST)
+            return Response.status(Response.Status.BAD_REQUEST)
                             .entity(new Message("Config content not found"))
                             .build();
         }
  
         Integer id = ConfigurationDB.createConfiguration(config.getContent(), config.getStatus());
         Link lnk = Link.fromUri(uriInfo.getPath() + "/" + id).rel("self").build();
-        return Response.status(javax.ws.rs.core.Response.Status.CREATED).location(lnk.getUri()).build();
+        return Response.status(Response.Status.CREATED).location(lnk.getUri()).build();
     }
 	
 	@PUT
 	@Path("/{id}")
-	@Consumes("application/xml")
+	@Consumes("application/json")
 	public Response updateConfiguration(@PathParam("id") Integer id, Configuration config) {
 		Configuration origConfig = ConfigurationDB.getConfiguration(id);
         if(origConfig == null) {
-            return Response.status(javax.ws.rs.core.Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
          
         if(config.getContent() == null)  {
-            return Response.status(javax.ws.rs.core.Response.Status.BAD_REQUEST)
+            return Response.status(Response.Status.BAD_REQUEST)
                             .entity(new Message("Config content not found"))
                             .build();
         }
  
         ConfigurationDB.updateConfiguration(id, config);
-        return Response.status(javax.ws.rs.core.Response.Status.OK).entity(new Message("Config Updated Successfully")).build();
+        return Response.status(Response.Status.OK).entity(new Message("Config Updated Successfully")).build();
 	}
 	
 	@DELETE
@@ -106,11 +106,11 @@ public class ConfigurationResource {
 	public Response deleteConfiguration(@PathParam("id") Integer id) {
 		 Configuration origConfig = ConfigurationDB.getConfiguration(id);
 	        if(origConfig == null) {
-	            return Response.status(javax.ws.rs.core.Response.Status.NOT_FOUND).build();
+	            return Response.status(Response.Status.NOT_FOUND).build();
 	        }
 	         
 	        ConfigurationDB.removeConfiguration(id);
-	        return Response.status(javax.ws.rs.core.Response.Status.OK).build();
+	        return Response.status(Response.Status.OK).build();
 	}
 	
 	 /**
