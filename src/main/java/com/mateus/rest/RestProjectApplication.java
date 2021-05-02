@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import com.mateus.rest.security.SecurityFilter;
 import com.mateus.rest.service.ConfigurationResource;
 
 @ApplicationPath("/rest")
@@ -16,6 +17,7 @@ public class RestProjectApplication extends Application {
 
 	public RestProjectApplication() {
 		singletons.add(new ConfigurationResource());
+		singletons.add(new SecurityFilter());
 	}
 
 	@Override

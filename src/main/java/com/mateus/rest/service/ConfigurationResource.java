@@ -2,6 +2,8 @@ package com.mateus.rest.service;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,7 +30,8 @@ public class ConfigurationResource {
 
 	@Context
 	UriInfo uriInfo;
-	
+
+    @PermitAll
 	@GET
 	public Configurations getConfigurations() {
 		List<Configuration> list = ConfigurationDB.getAllConfigurations();
@@ -48,7 +51,8 @@ public class ConfigurationResource {
         }
         return configurations;
 	}
-	
+
+    @RolesAllowed("ADMIN")
 	@GET
 	@Path("/{id}")
 	public Response getConfigurationById(@PathParam("id") Integer id) {
@@ -68,6 +72,7 @@ public class ConfigurationResource {
         return Response.status(Response.Status.OK).entity(config).build();
     }
 
+    @RolesAllowed("ADMIN")
 	@POST
 	@Consumes("application/json")
 	public Response createConfiguration(Configuration config){
@@ -81,7 +86,8 @@ public class ConfigurationResource {
         Link lnk = Link.fromUri(uriInfo.getPath() + "/" + id).rel("self").build();
         return Response.status(Response.Status.CREATED).location(lnk.getUri()).build();
     }
-	
+
+    @RolesAllowed("ADMIN")
 	@PUT
 	@Path("/{id}")
 	@Consumes("application/json")
@@ -100,7 +106,8 @@ public class ConfigurationResource {
         ConfigurationDB.updateConfiguration(id, config);
         return Response.status(Response.Status.OK).entity(new Message("Config Updated Successfully")).build();
 	}
-	
+
+    @RolesAllowed("ADMIN")
 	@DELETE
 	@Path("/{id}")
 	public Response deleteConfiguration(@PathParam("id") Integer id) {
