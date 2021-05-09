@@ -7,7 +7,7 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import com.mateus.rest.security.SecurityFilter;
-import com.mateus.rest.service.ConfigurationResource;
+import com.mateus.rest.service.ConfigurationResourceImpl;
 
 @ApplicationPath("/rest")
 public class RestProjectApplication extends Application {
@@ -16,7 +16,7 @@ public class RestProjectApplication extends Application {
 	private Set<Class<?>> empty = new HashSet<Class<?>>();
 
 	public RestProjectApplication() {
-		singletons.add(new ConfigurationResource());
+		singletons.add(new ConfigurationResourceImpl());
 		singletons.add(new SecurityFilter());
 	}
 
