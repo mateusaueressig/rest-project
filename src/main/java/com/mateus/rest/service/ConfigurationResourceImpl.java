@@ -5,6 +5,8 @@ import com.mateus.rest.domain.Configuration;
 import com.mateus.rest.domain.Configurations;
 import com.mateus.rest.domain.common.Message;
 import com.mateus.rest.domain.common.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.*;
@@ -13,8 +15,10 @@ import java.util.List;
 
 public class ConfigurationResourceImpl implements ConfigurationResource {
 
-	@Context
-	private UriInfo uriInfo;
+    private static Logger logger = LoggerFactory.getLogger(ConfigurationResource.class);
+
+    @Context
+    private UriInfo uriInfo;
 
     @Override
 	public Configurations getConfigurations() {
@@ -38,6 +42,7 @@ public class ConfigurationResourceImpl implements ConfigurationResource {
 
     @Override
 	public Response getConfigurationById(@PathParam("id") Integer id) {
+        logger.debug("getConfigurationById - id={}", id);
 		Configuration config = ConfigurationDB.getConfiguration(id);
      
         if(config == null) {
